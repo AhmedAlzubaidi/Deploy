@@ -18,6 +18,11 @@ docs/_build/
 __pycache__
 .env_file
 
+# Aws
+ci-cd-codepipeline.cfn.yml
+iam-role-policy.json
+trust.json
+
 # Coverage reports
 htmlcov/
 .coverage
