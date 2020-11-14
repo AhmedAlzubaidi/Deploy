@@ -18,7 +18,11 @@ docs/_build/
 __pycache__
 .env_file
 
-# Aws
+# git
+.git.bfg-report/
+bfg-1.13.0.jar
+
+# aws
 ci-cd-codepipeline.cfn.yml
 iam-role-policy.json
 trust.json
