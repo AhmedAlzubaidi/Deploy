@@ -121,6 +121,7 @@ Resources:
           import boto3
           from botocore.vendored import requests
           def handler(event, context):
+            print('lambda function start')
             response = {
               'Status': 'SUCCESS',
               "Reason": "See the details in CloudWatch Log Stream: " + context.log_stream_name,
@@ -138,10 +139,12 @@ Resources:
                 assume = client.get_role(RoleName = kubectl_role_name)
                 assume_doc = assume['Role']['AssumeRolePolicyDocument']
                 roles = [ { 'Effect': 'Allow', 'Principal': { 'AWS': build_role_arn }, 'Action': 'sts:AssumeRole' } ]
+                print('for loop start')
                 for statement in assume_doc['Statement']:
                   if 'AWS' in statement['Principal']:
                     if statement['Principal']['AWS'].startswith('arn:aws:iam:'):
                       roles.append(statement)
+                print('for loop end')
                 assume_doc['Statement'] = roles
                 update_response = client.update_assume_role_policy(RoleName = kubectl_role_name, PolicyDocument = json.dumps(assume_doc))
             except Exception as e:
@@ -150,8 +153,10 @@ Resources:
               response["Reason"] = e
               response['Data'] = {"Message": "Resource creation failed"}
             response_body = json.dumps(response)
-            headers = {'content-type': '', "content-length": len(response_body) }
+            headers = {'content-type': '', "content-length": str(len(response_body)) }
+            print('before requests.put')
             put_response = requests.put(event['ResponseURL'], headers=headers, data=response_body)
+            print('lambda function end')
             return response
       Handler: index.handler
       Role: !GetAtt CustomResourceLambdaExecutionRole.Arn
