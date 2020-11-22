@@ -23,6 +23,7 @@ __pycache__
 bfg-1.13.0.jar
 
 # aws
+aws-auth-patch.yml
 iam-role-policy.json
 trust.json
 
